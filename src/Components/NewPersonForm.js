@@ -12,6 +12,7 @@ function NewPersonForm() {
     const navigate = useNavigate()
 
     const [data, setData] = useState(INIT_STATE)
+    const [errorMessage, setErrorMessage] = useState()
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value })
@@ -35,21 +36,26 @@ function NewPersonForm() {
         })
 
         if (response.status !== 201) {
+            setErrorMessage('Error creating user')
 
         } else {
+            if (errorMessage) setErrorMessage('')
             navigate('/', { replace: true })
         }
 
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input onChange={handleChange} required name='name' placeholder='name' value={data.name} />
-            <input onChange={handleChange} required name='age' placeholder='age' value={data.age} />
-            <input onChange={handleChange} required name='location' placeholder='location' value={data.location} />
-            <input onChange={handleChange} name='favoriteColor' placeholder='favorite color' value={data.favoriteColor} />
-            <input type='submit' />
-        </form>
+        <div>
+            {errorMessage && <h3>{errorMessage}</h3>}
+            <form onSubmit={handleSubmit}>
+                <input onChange={handleChange} required name='name' placeholder='name' value={data.name} />
+                <input onChange={handleChange} required name='age' placeholder='age' value={data.age} />
+                <input onChange={handleChange} required name='location' placeholder='location' value={data.location} />
+                <input onChange={handleChange} name='favoriteColor' placeholder='favorite color' value={data.favoriteColor} />
+                <input type='submit' />
+            </form>
+        </div>
     )
 }
 
