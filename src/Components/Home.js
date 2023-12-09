@@ -7,7 +7,7 @@ function Home() {
     useEffect(() => {
         const fetchData = async () => {
             const url = `${process.env.REACT_APP_BACKEND_URL}/person/all`;
-            console.log(url)
+
             const response = await fetch(url)
             const data = await response.json()
 

@@ -21,7 +21,7 @@ function NewPersonForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         data.age = Number(data.age)
-        console.log(data)
+
         const url = `${process.env.REACT_APP_BACKEND_URL}/person`
         const response = await fetch(url, {
             method: 'POST',
