@@ -1,4 +1,4 @@
-Demo app working with a front end and seperate back end app. 
+Demo frontend app working with a frontend and seperate backend app. 
 
 The app can:
 

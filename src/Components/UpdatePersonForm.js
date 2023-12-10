@@ -1,18 +1,29 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
-function NewPersonForm() {
-    const INIT_STATE = {
-        name: '',
-        age: '',
-        location: '',
-        favoriteColor: ''
-    }
+function UpdatePersonForm() {
+    // const INIT_STATE = {
+    //     name: '',
+    //     age: '',
+    //     location: '',
+    //     favoriteColor: ''
+    // }
 
     const navigate = useNavigate()
 
-    const [data, setData] = useState(INIT_STATE)
+    const [data, setData] = useState('')
+    const { id } = useParams()
     const [errorMessage, setErrorMessage] = useState()
+
+    useEffect(() => {
+        async function getPerson() {
+            const url = `${process.env.REACT_APP_BACKEND_URL}/person/${id}`
+            const response = await fetch(url)
+            const data = await response.json()
+            setData(data)
+        }
+        getPerson()
+    }, [])
 
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value })
@@ -23,26 +34,24 @@ function NewPersonForm() {
         e.preventDefault()
         data.age = Number(data.age)
 
-        const url = `${process.env.REACT_APP_BACKEND_URL}/person`
+        const url = `${process.env.REACT_APP_BACKEND_URL}/person/update/${id}`
         const response = await fetch(url, {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         })
-        if (response.status !== 201) {
+        if (response.status !== 202) {
             setErrorMessage('Error creating user')
-
         } else {
             if (errorMessage) setErrorMessage('')
-            navigate('/', { replace: true })
+            await navigate(`/person/${id}`, { replace: true })
         }
-
     }
 
-    return (
+    const display = data && (
         <div>
             {errorMessage && <h3>{errorMessage}</h3>}
             <form onSubmit={handleSubmit}>
@@ -54,6 +63,12 @@ function NewPersonForm() {
             </form>
         </div>
     )
+
+    return (
+        <div>
+            {display}
+        </div>
+    )
 }
 
-export default NewPersonForm
+export default UpdatePersonForm

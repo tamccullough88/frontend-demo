@@ -26,13 +26,18 @@ function Display() {
         navigate('/', { replace: true })
     }
 
+    const updatePerson = async () => {
+        navigate(`/person/update/${id}`, { replace: true })
+    }
+
     const display = data && (
         <div>
             <h1>Name: {data.name}</h1>
             <h3> Age: {data.age}</h3>
-            <h3> Lication: {data.location} </h3>
+            <h3> Location: {data.location} </h3>
             {data.favoriteColor && <h3>Favorite Color: {data.favoriteColor} </h3>}
             <button onClick={deletePerson}>Delete</button>
+            <button onClick={updatePerson}>Update</button>
         </div>
     )
     return (
